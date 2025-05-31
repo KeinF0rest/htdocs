@@ -41,7 +41,7 @@ $data = isset($_SESSION["user_data"]) ? $_SESSION["user_data"] : [];
             
             <div>
                 <label>メールアドレス</label>
-                <input type="text" class="text" name="mail" maxlength="100" pattern="[a-zA-Z0-9@-]+" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
+                <input type="text" class="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@\-]+$" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
                 <span class="error" id="error_mail"></span>
             </div>
             <br>
@@ -55,7 +55,7 @@ $data = isset($_SESSION["user_data"]) ? $_SESSION["user_data"] : [];
             
             <div>
                 <label>性別</label>
-                <input type="radio" class="text" name="gender" value="0" <?= ($data["gender"] ?? '') === "0" ? "checked" : "" ?>>男
+                <input type="radio" class="text" name="gender" value="0" <?= ($data["gender"] ?? "0") === "0" ? "checked" : "" ?>>男
                 <input type="radio" class="text" name="gender" value="1" <?= ($data["gender"] ?? '') === "1" ? "checked" : "" ?>>女
                 <span class="error" id="error_gender"></span>
             </div>
@@ -81,7 +81,7 @@ $data = isset($_SESSION["user_data"]) ? $_SESSION["user_data"] : [];
                 ?>
                 <label>住所（都道府県）</label>
                 <select name="prefecture">
-                <option value="" <?= empty($data["prefecture"]) ? "selected" : "" ?>>選択してください</option>
+                <option value="" <?= empty($data["prefecture"]) ? "selected" : "" ?>></option>
                     <?php
                     foreach ($prefectures as $prefecture) {
                         $selected = ($data["prefecture"] ?? '') === $prefecture ? "selected" : "";
