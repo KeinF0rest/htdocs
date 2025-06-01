@@ -30,7 +30,7 @@ $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
             echo '<input type="submit" value="TOPページへ戻る">';
     echo '</form>';
 } catch(PDOException $e){
-    die("データベース接続エラー: " . $e->getMessage());
     echo "<p style='color:red;'>エラーが発生したためアカウント登録できません。</p>";
+    exit;
 }
 ?>
