@@ -95,14 +95,14 @@ $data = isset($_SESSION["user_data"]) ? $_SESSION["user_data"] : [];
             
             <div>
                 <label>住所（市区町村）</label>
-                <input type="text" class="text" name="address_1" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A0-\u30FF0-9\- ]+" value="<?= htmlspecialchars($data["address_1"] ?? '') ?>">
+                <input type="text" class="text" name="address_1" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A1-\u30FA\u3000\u30FC0-9]+" value="<?= htmlspecialchars($data["address_1"] ?? '') ?>">
                 <span class="error" id="error_address_1"></span>
             </div>
             <br>
             
             <div>
                 <label>住所（番地）</label>
-                <input type="text" class="text" name="address_2" maxlength="100" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A0-\u30FF0-9\- ]+" value="<?= htmlspecialchars($data["address_2"] ?? '') ?>">
+                <input type="text" class="text" name="address_2" maxlength="100" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A1-\u30FA\u3000\u30FC0-9]+" value="<?= htmlspecialchars($data["address_2"] ?? '') ?>">
                 <span class="error" id="error_address_2"></span>
             </div>
             <br>

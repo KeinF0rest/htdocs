@@ -1,12 +1,13 @@
 <?php
-$passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["user_data"] = $_POST;
+    $_SESSION["password_hash"] = password_hash($_POST['password'], PASSWORD_DEFAULT);
 }
 
 $data = $_SESSION["user_data"];
-
+$passwordHash = $_SESSION["password_hash"];
+$maskedPassword = str_repeat("●", strlen($_POST['password']));
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -28,7 +29,7 @@ $data = $_SESSION["user_data"];
             
             <p>メールアドレス <?php echo htmlspecialchars($data['mail']); ?></p>
             
-            <p>パスワード ●●●●●●</p>
+            <p>パスワード <?= $maskedPassword ?></p>
             
             <p>性別 <?php echo $data['gender']=="0" ? "男" : "女"; ?></p>
             
