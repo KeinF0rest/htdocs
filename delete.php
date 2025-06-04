@@ -39,6 +39,8 @@ $maskedPassword = str_repeat("●", 6);
         <p>住所（番地）　<?= htmlspecialchars($user['address_2'], ENT_QUOTES, 'UTF-8') ?></p>
         <p>アカウント権限　<?= $user['authority'] == "0" ? "一般" : "管理者" ?></p>
     </body>
-
-
+    <form action="delete_confirm.php" method="get">
+        <input type="hidden" name="id" value="<?= $user['id'] ?>">
+        <button type="submit">確認する</button>
+    </form>
 </html>
