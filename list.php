@@ -3,7 +3,7 @@ session_start();
 try{
     $pdo=new PDO("mysql:dbname=account;host=localhost;","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 }catch(PDOException $e){
-    echo "<p style='color:red;'>エラーが発生したためアカウント登録できません。</p>";
+    echo "<p style='color:red;'>エラーが発生したためアカウント一覧画面が閲覧できません。</p>";
     exit;
 }
 $stmt = $pdo->query(
