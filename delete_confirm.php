@@ -14,6 +14,12 @@ $id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $pdo->prepare("UPDATE account SET delete_flag = 1 WHERE id = ?");
     $result = $stmt->execute([$id]);
+    if ($result) {
+        header("Location: delete_complete.php");
+        exit;
+    } else {
+        echo "<p style='color:red;'>エラーが発生したためアカウント削除できません。</p>";
+    }
 }
 ?>
 
@@ -29,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="hidden" name="id" value="<?= $id ?>">
             <button type="submit">前に戻る</button>
         </form>
-        <form action="delete_complete.php" method="post">
-        <input type="hidden" name="id" value="<?= $id ?>">
-        <button type="submit">削除する</button>
-    </form>
+        <form action="delete_confirm.php" method="post">
+            <input type="hidden" name="id" value="<?= $id ?>">
+            <button type="submit">削除する</button>
+        </form>
     </body>
 </html>
