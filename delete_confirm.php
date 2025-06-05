@@ -1,6 +1,20 @@
 <?php
 session_start();
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
+try {
+    $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    echo "<p style='color:red;'>エラーが発生したためアカウント削除画面を表示できません。</p>";
+    exit;
+}
+
+$id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : null);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $stmt = $pdo->prepare("UPDATE account SET delete_flag = 1 WHERE id = ?");
+    $result = $stmt->execute([$id]);
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,5 +29,9 @@ $id = isset($_GET['id']) ? intval($_GET['id']) : null;
             <input type="hidden" name="id" value="<?= $id ?>">
             <button type="submit">前に戻る</button>
         </form>
+        <form action="delete_complete.php" method="post">
+        <input type="hidden" name="id" value="<?= $id ?>">
+        <button type="submit">削除する</button>
+    </form>
     </body>
 </html>
