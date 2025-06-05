@@ -11,5 +11,9 @@ $id = isset($_GET['id']) ? intval($_GET['id']) : null;
     </head>
     <body>
         <h1>本当に削除してよろしいですか？</h1>
+        <form action ="delete.php" method="get">
+            <input type="hidden" name="id" value="<?= $id ?>">
+            <button type="submit">前に戻る</button>
+        </form>
     </body>
 </html>
