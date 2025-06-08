@@ -9,13 +9,13 @@ try{
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
 $stmt = $pdo->prepare("
-    SELECT id, family_name, last_name, family_name_kana, last_name_kana, mail, password, gender, postal_code, prefecture, address_1, address_2, authority, LENGTH(password) AS password_length
+    SELECT id, family_name, last_name, family_name_kana, last_name_kana, mail, password, gender, postal_code, prefecture, address_1, address_2, authority
     FROM account WHERE id = ?
 ");
 $stmt->execute([$id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$maskedPassword = str_repeat("●", $user['password_length']);
+$maskedPassword = str_repeat("●", strlen($user['password']));
 ?>
 
 <!DOCTYPE html>
