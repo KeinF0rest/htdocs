@@ -5,7 +5,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
 } catch (PDOException $e) {
-    echo "<p style='color:red;'>エラーが発生したためアカウント削除画面を表示できません。</p>";
+    echo "<p style='color:red;'>エラーが発生したためアカウント削除できません。</p>";
     exit;
 }
 
