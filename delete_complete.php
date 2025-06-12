@@ -3,6 +3,11 @@
     <head>
         <meta charset ="UTF-8">
         <title>アカウント削除画面</title>
+        <style>
+            body{
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
         <h1>削除完了しました</h1>
