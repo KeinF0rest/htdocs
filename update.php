@@ -13,6 +13,9 @@ $stmt = $pdo->prepare("
 $stmt->execute([$id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$data = $_SESSION['update_data'] ?? $user;
+unset($_SESSION['update_data']);
+
 ?>
 
 <!DOCTYPE html>
@@ -26,35 +29,35 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         <form action ="update_confirm.php" method ="POST" id ="updateForm">
             <div>
                 <label>名前（姓）</label>
-                <input type="text" name="family_name" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF]+" value="<?= htmlspecialchars($user["family_name"]) ?>">
+                <input type="text" name="family_name" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF]+" value="<?= htmlspecialchars($data["family_name"]) ?>">
                 <span class="error" id="error_family_name"></span>
             </div>
             <br>
             
             <div>
                 <label>名前（名）</label>
-                <input type="text" name="last_name" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF]+" value="<?= htmlspecialchars($user["last_name"]) ?>">
+                <input type="text" name="last_name" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF]+" value="<?= htmlspecialchars($data["last_name"]) ?>">
                 <span class="error" id="error_last_name"></span>
             </div>
             <br>
             
             <div>
                 <label>カナ（姓）</label>
-                <input type="text" name="family_name_kana" maxlength="10" pattern="[\u30A0-\u30FF]+" value="<?= htmlspecialchars($user["family_name_kana"] ?? '') ?>">
+                <input type="text" name="family_name_kana" maxlength="10" pattern="[\u30A0-\u30FF]+" value="<?= htmlspecialchars($data["family_name_kana"] ?? '') ?>">
                 <span class="error" id="error_family_name_kana"></span>
             </div>
             <br>
             
             <div>
                 <label>カナ（名）</label>
-                <input type="text" name="last_name_kana" maxlength="10" pattern="[\u30A0-\u30FF]+" value="<?= htmlspecialchars($user["last_name_kana"] ?? '') ?>">
+                <input type="text" name="last_name_kana" maxlength="10" pattern="[\u30A0-\u30FF]+" value="<?= htmlspecialchars($data["last_name_kana"] ?? '') ?>">
                 <span class="error" id="error_last_name_kana"></span>
             </div>
             <br>
             
             <div>
                 <label>メールアドレス</label>
-                <input type="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@\-]+$" value="<?= htmlspecialchars($user["mail"] ?? '') ?>">
+                <input type="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@\-]+$" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
                 <span class="error" id="error_mail"></span>
             </div>
             <br>
@@ -68,15 +71,15 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
             <div>
                 <label>性別</label>
-                <input type="radio" name="gender" value="0" <?= ($user["gender"] ?? "0") == "0" ? "checked" : "" ?>>男
-                <input type="radio" name="gender" value="1" <?= ($user["gender"] ?? '') == "1" ? "checked" : "" ?>>女
+                <input type="radio" name="gender" value="0" <?= ($data["gender"] ?? "0") == "0" ? "checked" : "" ?>>男
+                <input type="radio" name="gender" value="1" <?= ($data["gender"] ?? '') == "1" ? "checked" : "" ?>>女
                 <span class="error" id="error_gender"></span>
             </div>
             <br>
             
             <div>
                 <label>郵便番号</label>
-                <input type="text" name="postal_code" maxlength="7" pattern="\d{7}" value="<?= htmlspecialchars($user["postal_code"]) ?>">
+                <input type="text" name="postal_code" maxlength="7" pattern="\d{7}" value="<?= htmlspecialchars($data["postal_code"]) ?>">
                 <span class="error" id="error_postal_code"></span>
             </div>
             <br>
@@ -94,10 +97,10 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 ?>
                 <label>住所（都道府県）</label>
                 <select name="prefecture">
-                <option value="" <?= empty($user["prefecture"]) ? "selected" : "" ?>></option>
+                <option value="" <?= empty($data["prefecture"]) ? "selected" : "" ?>></option>
                     <?php
                     foreach ($prefectures as $prefecture) {
-                        $selected = ($user["prefecture"] ?? '') === $prefecture ? "selected" : "";
+                        $selected = ($data["prefecture"] ?? '') === $prefecture ? "selected" : "";
                         echo "<option value='" . htmlspecialchars($prefecture) . "' $selected>" . htmlspecialchars($prefecture) . "</option>";
                     }
                     ?>
@@ -108,14 +111,14 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
             <div>
                 <label>住所（市区町村）</label>
-                <input type="text" name="address_1" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A1-\u30FA\u3000\u30FC0-9]+" value="<?= htmlspecialchars($user["address_1"]) ?>">
+                <input type="text" name="address_1" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A1-\u30FA\u3000\u30FC0-9]+" value="<?= htmlspecialchars($data["address_1"]) ?>">
                 <span class="error" id="error_address_1"></span>
             </div>
             <br>
             
             <div>
                 <label>住所（番地）</label>
-                <input type="text" name="address_2" maxlength="100" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A1-\u30FA\u3000\u30FC0-9]+" value="<?= htmlspecialchars($user["address_2"]) ?>">
+                <input type="text" name="address_2" maxlength="100" pattern="[\u3040-\u309F\u4E00-\u9FAF\u30A1-\u30FA\u3000\u30FC0-9]+" value="<?= htmlspecialchars($data["address_2"]) ?>">
                 <span class="error" id="error_address_2"></span>
             </div>
             <br>
@@ -123,8 +126,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
             <div>
                 <label>アカウント権限</label>
                 <select name="authority">
-                    <option value="0" <?= ($user["authority"]) == "0" ? "selected" : "" ?>>一般</option>
-                    <option value="1" <?= ($user["authority"]) == "1" ? "selected" : "" ?>>管理者</option>
+                    <option value="0" <?= ($data["authority"]) == "0" ? "selected" : "" ?>>一般</option>
+                    <option value="1" <?= ($data["authority"]) == "1" ? "selected" : "" ?>>管理者</option>
                 </select>
             </div>
             <br>
