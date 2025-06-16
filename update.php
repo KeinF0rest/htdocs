@@ -27,6 +27,7 @@ unset($_SESSION['update_data']);
     <body>
         <h1>アカウント更新画面</h1>
         <form action ="update_confirm.php" method ="POST" id ="updateForm">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($data['id'] ?? $user['id']) ?>">
             <div>
                 <label>名前（姓）</label>
                 <input type="text" name="family_name" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF]+" value="<?= htmlspecialchars($data["family_name"]) ?>">

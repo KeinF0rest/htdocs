@@ -80,7 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
             
             <p>アカウント権限 <?= $_POST['authority']=="0" ? "一般" : "管理者" ?></p>
             
-            <form method="POST">
+            <form method="POST" name ="update">
+                <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
                 <?php foreach ($_POST as $key => $value) { ?>
                     <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
                 <?php } ?>
