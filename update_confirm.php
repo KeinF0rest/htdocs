@@ -14,7 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
         $sql = "
             UPDATE account SET 
                 family_name = ?, 
-                last_name = ?, 
+                last_name = ?,
+                family_name_kana = ?,
+                last_name_kana = ?,
                 mail = ?, 
                 gender = ?, 
                 postal_code = ?, 
@@ -28,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
 
         $stmt = $pdo->prepare($sql);
         $params = [
-            $_POST["family_name"], $_POST["last_name"], $_POST["mail"],
+            $_POST["family_name"], $_POST["last_name"], $_POST["family_name_kana"], $_POST["last_name_kana"], $_POST["mail"],
             $_POST["gender"], $_POST["postal_code"], $_POST["prefecture"],
             $_POST["address_1"], $_POST["address_2"], $_POST["authority"],
         ];
