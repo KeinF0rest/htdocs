@@ -73,7 +73,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
             
             <p>メールアドレス <?= htmlspecialchars($_POST['mail']) ?></p>
             
-            <p>パスワード 　安全上表示されません</p>
+            <p>パスワード 
+                <?php 
+                    if(empty($_POST['password'])) {
+                        echo "パスワードは変更されませんでした。";
+                    } else {
+                        echo str_repeat('●', strlen($_POST['password']));
+                    }
+                ?>
+    
+            </p>
             
             <p>性別 <?= $_POST['gender']=="0" ? "男" : "女" ?></p>
             
