@@ -1,8 +1,13 @@
 <?php
 session_start();
-$pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-]);
+try {
+    $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    echo "<p style='color:red;'>エラーが発生したためアカウント更新できません。</p>";
+    exit;
+}
 
 $_SESSION['update_data'] = $_POST;
 
