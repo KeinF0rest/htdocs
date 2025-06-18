@@ -14,6 +14,7 @@ $_SESSION['update_data'] = $_POST;
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
     try {
         $id = intval($_POST['id'] ?? 0);
+        
         $password = !empty($_POST["password"]) ? password_hash($_POST["password"], PASSWORD_DEFAULT) : null;
 
         $sql = "

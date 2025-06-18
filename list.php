@@ -23,6 +23,15 @@ $users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
             th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
             button { padding: 5px 10px; cursor: pointer; }
         </style>
+        <script>
+        function checkAccountStatus(deleteFlag, userId) {
+            if (deleteFlag == 1) {
+                alert("アカウント情報がありません。");
+            } else {
+                location.href = 'update.php?id=' + userId;
+            }
+        }
+    </script>
     </head>
     <body>
         <h1>アカウント一覧画面</h1>
@@ -58,7 +67,7 @@ $users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
                     <td><?= $user['delete_flag'] == "0" ? "有効" : "無効" ?></td>
                     <td><?= date("Y-m-d", strtotime($user['registered_time'])) ?></td>
                 <td><?= date("Y-m-d", strtotime($user['update_time'])) ?></td>
-                <td><button onclick="location.href='update.php?id=<?= $user['id'] ?>'">更新</button></td>
+                <td><button onclick="checkAccountStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">更新</button></td>
                 <td><button onclick="location.href='delete.php?id=<?= $user['id'] ?>'">削除</button></td>
                 </tr>
                 <?php endforeach; ?>
