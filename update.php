@@ -65,7 +65,7 @@ unset($_SESSION['update_data']);
             
             <div>
                 <label>パスワード（更新時のみ入力してください）</label>
-                <input type="text" name="password" maxlength="10" pattern="[A-Za-z0-9]+">
+                <input type="text" name="password" maxlength="10" pattern="[A-Za-z0-9]+" value="<?= htmlspecialchars($data['password'] ?? '') ?>">
                 <span class="error" id="error_password"></span>
             </div>
             <br>
