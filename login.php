@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'mail' => $user['mail'],
                 'authority' => $user['authority']
             ];
-            header("Location: index.html");
+            header("Location: index.php");
             exit();
         } else {
             $error = "メールアドレスまたはパスワードが正しくありません。";
