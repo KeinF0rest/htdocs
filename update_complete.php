@@ -11,7 +11,7 @@
     </head>
     <body>
         <h1>更新完了しました</h1>
-        <form action ="index.html" method ="get">
+        <form action ="index.php" method ="get">
             <button type ="submit">TOPページへ戻る</button>
         </form>
         

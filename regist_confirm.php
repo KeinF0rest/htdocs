@@ -1,11 +1,11 @@
 <?php
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $_SESSION["user_data"] = $_POST;
+    $_SESSION["regist_data"] = $_POST;
     $_SESSION["password_hash"] = password_hash($_POST['password'], PASSWORD_DEFAULT);
 }
 
-$data = $_SESSION["user_data"];
+$data = $_SESSION["regist_data"];
 $passwordHash = $_SESSION["password_hash"];
 $maskedPassword = str_repeat("●", strlen($_POST['password']));
 ?>

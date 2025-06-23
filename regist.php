@@ -1,6 +1,7 @@
 <?php
 session_start();
-$data = isset($_SESSION["user_data"]) ? $_SESSION["user_data"] : [];
+$data = $_SESSION['regist_data'] ?? [];
+unset($_SESSION['regist_data']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">

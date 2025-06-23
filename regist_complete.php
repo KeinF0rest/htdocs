@@ -27,7 +27,7 @@ $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $stmt->execute();
     echo '<div style="text-align: center; margin-top: 50px;">';
     echo "<h1>登録完了しました</h1>";
-    echo '<form action="index.html">';
+    echo '<form action="index.php">';
             echo '<input type="submit" value="TOPページへ戻る">';
     echo '</form>';
 } catch(PDOException $e){
