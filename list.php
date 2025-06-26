@@ -6,11 +6,41 @@ try{
     echo "<p style='color:red;'>エラーが発生したためアカウント一覧画面が閲覧できません。</p>";
     exit;
 }
-$stmt = $pdo->query(
-"SELECT id, family_name, last_name, family_name_kana, last_name_kana, mail, gender, authority, delete_flag, registered_time, update_time
-FROM account ORDER BY id DESC
-");
-$users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+$users = [];
+
+if ($_GET) {
+    $where = [];
+    $params = [];
+
+    foreach (['family_name', 'last_name', 'family_name_kana', 'last_name_kana', 'mail'] as $field) {
+        if (!empty($_GET[$field])) {
+            $where[] = "$field LIKE ?";
+            $params[] = "%" . $_GET[$field] . "%";
+        }
+    }
+
+    if (isset($_GET['gender']) && $_GET['gender'] !== '') {
+        $where[] = "gender = ?";
+        $params[] = $_GET['gender'];
+    }
+
+    if (isset($_GET['authority']) && $_GET['authority'] !== '') {
+        $where[] = "authority = ?";
+        $params[] = $_GET['authority'];
+    }
+
+    $sql = "SELECT id, family_name, last_name, family_name_kana, last_name_kana, mail, gender, authority, delete_flag, registered_time, update_time FROM account";
+
+    if ($where) {
+        $sql .= " WHERE " . implode(" AND ", $where);
+    }
+
+    $sql .= " ORDER BY id DESC";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +48,7 @@ $users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
     <head>
         <meta charset ="UTF-8">
         <title>アカウント一覧</title>
+        <link rel="stylesheet" type="text/css" href="style2.css">
         <style>
             table { width: 100%; border-collapse: collapse; }
             th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
@@ -35,6 +66,28 @@ $users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
     </head>
     <body>
         <h1>アカウント一覧画面</h1>
+        <form method="GET" action="">
+            <div class ="search-area">
+    <label>名前（姓）：<input type="text" name="family_name" value="<?= htmlspecialchars($_GET['family_name'] ?? '') ?>"></label>
+    <label>名前（名）：<input type="text" name="last_name" value="<?= htmlspecialchars($_GET['last_name'] ?? '') ?>"></label>
+    <label>カナ（姓）：<input type="text" name="family_name_kana" value="<?= htmlspecialchars($_GET['family_name_kana'] ?? '') ?>"></label>
+    <label>カナ（名）：<input type="text" name="last_name_kana" value="<?= htmlspecialchars($_GET['last_name_kana'] ?? '') ?>"></label>
+    <label>メールアドレス：<input type="text" name="mail" value="<?= htmlspecialchars($_GET['mail'] ?? '') ?>"></label>
+    <label>性別：
+        <input type="radio" name="gender" value="0" <?= (isset($_GET['gender']) && $_GET['gender'] === '0') ? 'checked' : '' ?>>男
+        <input type="radio" name="gender" value="1" <?= (isset($_GET['gender']) && $_GET['gender'] === '1') ? 'checked' : '' ?>>女
+    </label>
+    <label>アカウント権限：
+        <select name="authority">
+            <option value="" <?= (isset($_GET['authority']) && $_GET['authority'] === '') ? 'selected' : '' ?>></option>
+            <option value="0" <?= (!isset($_GET['authority']) || $_GET['authority'] === '0') ? 'selected' : '' ?>>一般</option>
+            <option value="1" <?= (isset($_GET['authority']) && $_GET['authority'] === '1') ? 'selected' : '' ?>>管理者</option>
+        </select>
+    </label>
+    <button type="submit">検索</button>
+    </div>
+</form>
+        <?php if(!empty($users)): ?>
         <table>
             <thead>
                 <tr>
@@ -73,6 +126,24 @@ $users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php endif; ?>
+        <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const radios = document.querySelectorAll("input[name='gender']");
+  let lastChecked = null;
+
+  radios.forEach(radio => {
+    radio.addEventListener("mousedown", function () {
+      if (this === lastChecked) {
+        this.checked = false;
+        lastChecked = null;
+      } else {
+        lastChecked = this;
+      }
+    });
+  });
+});
+</script>
     </body>
 
 </html>
