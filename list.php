@@ -62,31 +62,49 @@ if ($_GET) {
                 location.href = 'update.php?id=' + userId;
             }
         }
-    </script>
+        </script>
     </head>
     <body>
         <h1>アカウント一覧画面</h1>
         <form method="GET" action="">
-            <div class ="search-area">
-    <label>名前（姓）：<input type="text" name="family_name" value="<?= htmlspecialchars($_GET['family_name'] ?? '') ?>"></label>
-    <label>名前（名）：<input type="text" name="last_name" value="<?= htmlspecialchars($_GET['last_name'] ?? '') ?>"></label>
-    <label>カナ（姓）：<input type="text" name="family_name_kana" value="<?= htmlspecialchars($_GET['family_name_kana'] ?? '') ?>"></label>
-    <label>カナ（名）：<input type="text" name="last_name_kana" value="<?= htmlspecialchars($_GET['last_name_kana'] ?? '') ?>"></label>
-    <label>メールアドレス：<input type="text" name="mail" value="<?= htmlspecialchars($_GET['mail'] ?? '') ?>"></label>
-    <label>性別：
-        <input type="radio" name="gender" value="0" <?= (isset($_GET['gender']) && $_GET['gender'] === '0') ? 'checked' : '' ?>>男
-        <input type="radio" name="gender" value="1" <?= (isset($_GET['gender']) && $_GET['gender'] === '1') ? 'checked' : '' ?>>女
-    </label>
-    <label>アカウント権限：
-        <select name="authority">
-            <option value="" <?= (isset($_GET['authority']) && $_GET['authority'] === '') ? 'selected' : '' ?>></option>
-            <option value="0" <?= (!isset($_GET['authority']) || $_GET['authority'] === '0') ? 'selected' : '' ?>>一般</option>
-            <option value="1" <?= (isset($_GET['authority']) && $_GET['authority'] === '1') ? 'selected' : '' ?>>管理者</option>
-        </select>
-    </label>
-    <button type="submit">検索</button>
-    </div>
-</form>
+            <table class ="search-form">
+                <tbody>
+                    <tr>
+                        <th>名前（姓）</th>
+                        <td><input type="text" name="family_name" value="<?= htmlspecialchars($_GET['family_name'] ?? '') ?>"></td>
+                        <th>名前（名）</th>
+                        <td><input type="text" name="last_name" value="<?= htmlspecialchars($_GET['last_name'] ?? '') ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>カナ（姓）</th>
+                        <td><input type="text" name="family_name_kana" value="<?= htmlspecialchars($_GET['family_name_kana'] ?? '') ?>"></td>
+                        <th>カナ（名）</th>
+                        <td><input type="text" name="last_name_kana" value="<?= htmlspecialchars($_GET['last_name_kana'] ?? '') ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>メールアドレス</th>
+                        <td><input type="text" name="mail" value="<?= htmlspecialchars($_GET['mail'] ?? '') ?>"></td>
+                        <th>性別</th>
+                        <td>
+                            <input type="hidden" name="gender_hidden" value="">
+                            <input type="radio" name="gender" value="0" <?= (!array_key_exists('gender', $_GET) || $_GET['gender'] === '0') ? 'checked' : '' ?>>男
+                            <input type="radio" name="gender" value="1" <?= (isset($_GET['gender']) && $_GET['gender'] === '1') ? 'checked' : '' ?>>女
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>アカウント権限</th>
+                        <td>
+                            <select name="authority">
+                                <option value="" <?= (isset($_GET['authority']) && $_GET['authority'] === '') ? 'selected' : '' ?>></option>
+                                <option value="0" <?= (!isset($_GET['authority']) || $_GET['authority'] === '0') ? 'selected' : '' ?>>一般</option>
+                                <option value="1" <?= (isset($_GET['authority']) && $_GET['authority'] === '1') ? 'selected' : '' ?>>管理者</option>
+                            </select>
+                        </td>          
+                        <th><button type="submit">検索</button></th>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
         <?php if(!empty($users)): ?>
         <table>
             <thead>
@@ -128,22 +146,24 @@ if ($_GET) {
         </table>
         <?php endif; ?>
         <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const radios = document.querySelectorAll("input[name='gender']");
-  let lastChecked = null;
+            document.addEventListener("DOMContentLoaded", function () {
+                const radios = document.querySelectorAll("input[name='gender']");
+                const hidden = document.querySelector("input[name='gender_hidden']");
 
-  radios.forEach(radio => {
-    radio.addEventListener("mousedown", function () {
-      if (this === lastChecked) {
-        this.checked = false;
-        lastChecked = null;
-      } else {
-        lastChecked = this;
-      }
-    });
-  });
-});
-</script>
+                radios.forEach(radio => {
+                    radio.addEventListener("click", function () {
+                        if (this.classList.contains("selected")) {
+                            this.checked = false;
+                            this.classList.remove("selected");
+                            hidden.value = "";
+                        } else {
+                            radios.forEach(r => r.classList.remove("selected"));
+                            this.classList.add("selected");
+                            hidden.value = this.value;
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
-
 </html>
