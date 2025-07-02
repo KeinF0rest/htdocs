@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM account WHERE mail = :mail");
+        $stmt = $pdo->prepare("SELECT * FROM account WHERE mail = :mail AND delete_flag = 0");
         $stmt->bindParam(':mail', $mail);
         $stmt->execute();
         $user = $stmt->fetch();
