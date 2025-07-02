@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
+    $_SESSION['error'] = 'このページへアクセスする権限がありません。';
+    header('Location: error.php');
+    exit();
+}
+
 $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 ]);

@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
+    $_SESSION['error'] = 'このページへアクセスする権限がありません。';
+    header('Location: error.php');
+    exit();
+}
+
 $data = $_SESSION['regist_data'] ?? [];
 unset($_SESSION['regist_data']);
 ?>
