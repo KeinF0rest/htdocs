@@ -13,6 +13,27 @@ try{
     exit;
 }
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+if (!$id) {
+    $_SESSION['error'] = '無効なIDが指定されています。';
+    header('Location: error.php');
+    exit();
+}
+
+$stmt = $pdo->prepare("SELECT delete_flag FROM account WHERE id = ?");
+$stmt->execute([$id]);
+$deleteFlag = $stmt->fetchColumn();
+
+if ($deleteFlag === false) {
+    $_SESSION['error'] = '指定されたアカウントは存在しません。';
+    header('Location: error.php');
+    exit();
+}
+
+if ($deleteFlag == 1) {
+    $_SESSION['error'] = 'このアカウントはすでに削除済みです。';
+    header('Location: error.php');
+    exit();
+}
 
 $stmt = $pdo->prepare("
     SELECT id, family_name, last_name, family_name_kana, last_name_kana, mail, password, gender, postal_code, prefecture, address_1, address_2, authority

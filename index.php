@@ -31,6 +31,14 @@ $authority = $_SESSION['user']['authority'] ?? null;
     
 </head>
 <body>
+    <?php
+if (isset($_SESSION['top_error'])) {
+    echo "<div style='color:red; margin:10px; text-align:center;'>"
+        . htmlspecialchars($_SESSION['top_error'], ENT_QUOTES, 'UTF-8')
+        . "</div>";
+    unset($_SESSION['top_error']);
+}
+?>
     <img src="diblog_logo.jpg" class="log">
     <header>
         <ul>

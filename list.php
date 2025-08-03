@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
-    $_SESSION['error'] = 'このページへアクセスする権限がありません。';
-    header('Location: error.php');
+    $_SESSION['top_error'] = 'アクセスする権限がありません。';
+    header('Location: index.php');
     exit();
 }
 
@@ -66,6 +66,13 @@ if ($_GET) {
                 alert("アカウント情報がありません。");
             } else {
                 location.href = 'update.php?id=' + userId;
+            }
+        }
+        function checkDeleteStatus(deleteFlag, userId) {
+            if (deleteFlag == 1) {
+                alert("このアカウントはすでに削除済みです。操作できません。");
+            } else {
+                location.href = 'delete.php?id=' + userId;
             }
         }
         </script>
@@ -145,7 +152,7 @@ if ($_GET) {
                     <td><?= date("Y-m-d", strtotime($user['registered_time'])) ?></td>
                 <td><?= date("Y-m-d", strtotime($user['update_time'])) ?></td>
                 <td><button onclick="checkAccountStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">更新</button></td>
-                <td><button onclick="checkAccountStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">削除</button></td>
+                <td><button onclick="checkDeleteStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">削除</button></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
