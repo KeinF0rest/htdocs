@@ -2,12 +2,12 @@
 session_start();
 if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     $_SESSION['error'] = 'このページへアクセスする権限がありません。';
-    header('Location: error.php');
-    exit();
+    $accessDenied = true;
+} else {
+    $accessDenied = false;
+    $data = $_SESSION['regist_data'] ?? [];
 }
 
-$data = $_SESSION['regist_data'] ?? [];
-unset($_SESSION['regist_data']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -17,6 +17,12 @@ unset($_SESSION['regist_data']);
     </head>
     <body>
         <h1>アカウント登録画面</h1>
+        <?php if ($accessDenied): ?>
+        <div style="color: red; margin-bottom: 10px;">
+            <?= htmlspecialchars($_SESSION['error']) ?>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php else: ?>
         <form id="registerForm" method="post" action="regist_confirm.php">
             <div>
                 <label>名前（姓）</label>
@@ -48,7 +54,7 @@ unset($_SESSION['regist_data']);
             
             <div>
                 <label>メールアドレス</label>
-                <input type="text" class="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@\-]+$" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
+                <input type="text" class="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@.\-]+$" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
                 <span class="error" id="error_mail"></span>
             </div>
             <br>
@@ -129,6 +135,7 @@ unset($_SESSION['regist_data']);
             </div>
             <br>
         </form> 
+        <?php endif; ?>
         
         <script>
             document.getElementById("registerForm").addEventListener("submit", function(event) {
@@ -159,7 +166,6 @@ unset($_SESSION['regist_data']);
                     event.preventDefault();
                 }
             });
-</script>
-
+        </script>
     </body>
 </html>

@@ -145,7 +145,7 @@ if ($_GET) {
                     <td><?= date("Y-m-d", strtotime($user['registered_time'])) ?></td>
                 <td><?= date("Y-m-d", strtotime($user['update_time'])) ?></td>
                 <td><button onclick="checkAccountStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">更新</button></td>
-                <td><button onclick="location.href='delete.php?id=<?= $user['id'] ?>'">削除</button></td>
+                <td><button onclick="checkAccountStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">削除</button></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>

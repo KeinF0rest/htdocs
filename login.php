@@ -51,5 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type ="text" name ="password" maxlength ="10" required><br>
             <button type="submit">ログイン</button>
         </form>
+        <script>
+            function validateForm() {
+                const mail = document.getElementById('mail').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!mail || !password) {
+                    alert("メールアドレスとパスワードを入力してください。");
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </body>
 </html>
