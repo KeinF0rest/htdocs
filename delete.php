@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
-    $_SESSION['error'] = 'このページへアクセスする権限がありません。';
-    header('Location: error.php');
+    $_SESSION['top_error'] = 'アクセスする権限がありません。';
+    header('Location: index.php');
     exit();
 }
 
