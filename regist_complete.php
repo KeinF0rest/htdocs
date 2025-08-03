@@ -1,6 +1,11 @@
 <?php
 mb_internal_encoding("utf8");
 session_start();
+if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
+    $_SESSION['top_error'] = 'アクセスする権限がありません。';
+    header('Location: index.php');
+    exit();
+}
 
 try{
 $pdo=new PDO("mysql:dbname=account;host=localhost;","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);

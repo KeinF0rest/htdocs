@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
+    $_SESSION['top_error'] = 'アクセスする権限がありません。';
+    header('Location: index.php');
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["regist_data"] = $_POST;
     $_SESSION["password_hash"] = password_hash($_POST['password'], PASSWORD_DEFAULT);

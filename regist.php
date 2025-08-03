@@ -1,11 +1,9 @@
 <?php
 session_start();
 if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
-    $_SESSION['error'] = 'このページへアクセスする権限がありません。';
-    $accessDenied = true;
-} else {
-    $accessDenied = false;
-    $data = $_SESSION['regist_data'] ?? [];
+    $_SESSION['top_error'] = 'アクセスする権限がありません。';
+    header('Location: index.php');
+    exit();
 }
 
 ?>
