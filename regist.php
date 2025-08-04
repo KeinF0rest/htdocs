@@ -15,12 +15,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     </head>
     <body>
         <h1>アカウント登録画面</h1>
-        <?php if ($accessDenied): ?>
-        <div style="color: red; margin-bottom: 10px;">
-            <?= htmlspecialchars($_SESSION['error']) ?>
-        </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php else: ?>
         <form id="registerForm" method="post" action="regist_confirm.php">
             <div>
                 <label>名前（姓）</label>
@@ -133,7 +127,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
             </div>
             <br>
         </form> 
-        <?php endif; ?>
         
         <script>
             document.getElementById("registerForm").addEventListener("submit", function(event) {

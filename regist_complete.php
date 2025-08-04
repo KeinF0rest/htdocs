@@ -7,6 +7,15 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+if (isset($_SESSION['registration_complete']) && $_SESSION['registration_complete'] === true) {
+    echo '<div style="text-align: center; margin-top: 50px;">';
+    echo '<h1>このアカウントはすでに登録されています</h1>';
+    echo '<form action="index.php">';
+    echo '<input type="submit" value="TOPページへ戻る">';
+    echo '</form>';
+    exit();
+}
+
 try{
 $pdo=new PDO("mysql:dbname=account;host=localhost;","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -30,6 +39,9 @@ $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $stmt->bindParam(":authority", $_POST['authority']);
 
     $stmt->execute();
+    
+    $_SESSION['registration_complete'] = true;
+    
     echo '<div style="text-align: center; margin-top: 50px;">';
     echo "<h1>登録完了しました</h1>";
     echo '<form action="index.php">';
