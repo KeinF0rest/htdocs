@@ -50,7 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
         $params[] = $id;
 
         $stmt->execute($params);
-
+        
+        $_SESSION['update_complete'] = true;
         header("Location: update_complete.php");
         exit;
 
