@@ -8,7 +8,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
 $Reloaded = false;
 if (isset($_SESSION['update_complete'])) {
     if ($_SESSION['update_complete'] === true) {
-        $_SESSION['update_complete'] = 'viewed'; // 初回表示後に切り替え
+        $_SESSION['update_complete'] = 'viewed';
     } elseif ($_SESSION['update_complete'] === 'viewed') {
         $Reloaded = true;
     }

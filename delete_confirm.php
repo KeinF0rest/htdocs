@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $pdo->prepare("UPDATE account SET delete_flag = 1 WHERE id = ?");
     $result = $stmt->execute([$id]);
     if ($result) {
+        $_SESSION['delete_complete'] = true;
         header("Location: delete_complete.php");
         exit;
     } else {
