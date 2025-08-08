@@ -6,6 +6,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+if (empty($_SESSION['update'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
+}
+unset($_SESSION['update']);
+
 $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 ]);

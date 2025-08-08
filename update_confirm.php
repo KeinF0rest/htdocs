@@ -6,6 +6,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+if (empty($_SESSION['update_confirm'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
+}
+unset($_SESSION['update_confirm']);
+
 try {
     $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -104,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
             
             <p>アカウント権限 <?= $_POST['authority']=="0" ? "一般" : "管理者" ?></p>
             
-            <form method="POST" name ="update">
+            <form method="POST" name ="update" action ="update_complete.php">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
                 <?php foreach ($_POST as $key => $value) { ?>
                     <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">

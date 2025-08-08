@@ -51,9 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
         <form method ="POST" onsubmit="return validateForm();">
             <label>メールアドレス</label>
-            <input type ="text" name ="mail" maxlength ="100" required><br>
+            <input type ="text" name ="mail" id ="mail" maxlength ="100"><br>
             <label>パスワード</label>
-            <input type ="text" name ="password" maxlength ="10" required><br>
+            <input type ="text" name ="password" id ="password" maxlength ="10"><br>
             <button type="submit">ログイン</button>
         </form>
         <script>

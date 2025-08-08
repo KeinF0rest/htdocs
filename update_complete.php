@@ -6,6 +6,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+if (empty($_SESSION['update_complete'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
+}
+unset ($_SESSION['update_complete']);
+
 $Reloaded = false;
 if (isset($_SESSION['update_complete'])) {
     if ($_SESSION['update_complete'] === true) {
