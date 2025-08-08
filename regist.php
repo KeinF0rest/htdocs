@@ -6,6 +6,8 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+$_SESSION['form_token'] = bin2hex(random_bytes(32));
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -16,6 +18,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     <body>
         <h1>アカウント登録画面</h1>
         <form id="registerForm" method="post" action="regist_confirm.php">
+            <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
             <div>
                 <label>名前（姓）</label>
                 <input type="text" class="text" name="family_name" maxlength="10" pattern="[\u3040-\u309F\u4E00-\u9FAF]+" value="<?= htmlspecialchars($data["family_name"] ?? '') ?>">

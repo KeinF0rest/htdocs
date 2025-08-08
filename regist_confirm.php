@@ -6,6 +6,12 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+if (!isset($_POST['form_token']) || $_POST['form_token'] !== ($_SESSION['form_token'] ?? '')) {
+    die("不正な遷移です。");
+}
+
+unset($_SESSION['form_token']);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["regist_data"] = $_POST;
     $_SESSION["password_hash"] = password_hash($_POST['password'], PASSWORD_DEFAULT);

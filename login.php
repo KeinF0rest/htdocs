@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+$_SESSION = [];
+session_destroy();
+session_start();
+
 $error ='';
 
 $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
@@ -44,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error): ?>
             <p style="color:red"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
-        <form method ="POST">
+        <form method ="POST" onsubmit="return validateForm();">
             <label>メールアドレス</label>
             <input type ="text" name ="mail" maxlength ="100" required><br>
             <label>パスワード</label>

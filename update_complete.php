@@ -5,6 +5,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     header('Location: index.php');
     exit();
 }
+
 $Reloaded = false;
 if (isset($_SESSION['update_complete'])) {
     if ($_SESSION['update_complete'] === true) {
@@ -13,7 +14,6 @@ if (isset($_SESSION['update_complete'])) {
         $Reloaded = true;
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang ="ja">

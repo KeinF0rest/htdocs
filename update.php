@@ -64,7 +64,7 @@ unset($_SESSION['update_data']);
             
             <div>
                 <label>メールアドレス</label>
-                <input type="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@\-]+$" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
+                <input type="text" name="mail" maxlength="100" pattern="^[a-zA-Z0-9@.\-]+$" value="<?= htmlspecialchars($data["mail"] ?? '') ?>">
                 <span class="error" id="error_mail"></span>
             </div>
             <br>
