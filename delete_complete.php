@@ -5,19 +5,20 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     header('Location: index.php');
     exit();
 }
-if (empty($_SESSION['delete_complete'])) {
+if (empty($_SESSION['delete_complete'])|| !in_array($_SESSION['delete_complete'], ['ready', 'viewed'])) {
     $_SESSION['top_error'] = '不正なアクセスです。';
     header('Location: index.php');
     exit();
 }
-unset($_SESSION['delete_complete']);
+
 
 $Reloaded = false;
 if (isset($_SESSION['delete_complete'])) {
-    if ($_SESSION['delete_complete'] === true) {
+    if ($_SESSION['delete_complete'] === 'ready') {
         $_SESSION['delete_complete'] = 'viewed';
     } elseif ($_SESSION['delete_complete'] === 'viewed') {
         $Reloaded = true;
+        unset($_SESSION['delete_complete']);
     }
 }
 

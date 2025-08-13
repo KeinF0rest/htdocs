@@ -5,12 +5,14 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     header('Location: index.php');
     exit();
 }
-if (empty($_SESSION['delete_confirm'])) {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST)) {
     $_SESSION['top_error'] = '不正なアクセスです。';
     header('Location: index.php');
     exit();
 }
-unset($_SESSION['delete_confirm']);
+
+$_SESSION['delete_exec'] = true;
+$_SESSION['delete_data'] = $_POST;
 
 try {
     $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [
@@ -23,16 +25,25 @@ try {
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : null);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if (isset($_POST['delete'])) {
+    if (empty($_SESSION['delete_confirm_exec'])) {
+        $_SESSION['top_error'] = '不正なアクセスです。';
+        header('Location: index.php');
+        exit();
+    }
+    unset($_SESSION['delete_confirm_exec']);
+
     $stmt = $pdo->prepare("UPDATE account SET delete_flag = 1 WHERE id = ?");
     $result = $stmt->execute([$id]);
     if ($result) {
-        $_SESSION['delete_complete'] = true;
+        $_SESSION['delete_complete'] = 'ready';
         header("Location: delete_complete.php");
         exit;
     } else {
         echo "<p style='color:red;'>エラーが発生したためアカウント削除できません。</p>";
     }
+} else {
+    $_SESSION['delete_confirm_exec'] = true;
 }
 ?>
 
@@ -50,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
         <form action="delete_confirm.php" method="post">
             <input type="hidden" name="id" value="<?= $id ?>">
-            <button type="submit">削除する</button>
+            <button type="submit" name="delete">削除する</button>
         </form>
     </body>
 </html>

@@ -6,7 +6,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
-if (empty($_SESSION['delete'])) {
+if (empty($_SESSION['delete']) && empty($_SESSION['delete_data'])) {
     $_SESSION['top_error'] = '不正なアクセスです。';
     header('Location: index.php');
     exit();
@@ -72,8 +72,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         <p>住所（番地）　<?= htmlspecialchars($user['address_2'], ENT_QUOTES, 'UTF-8') ?></p>
         <p>アカウント権限　<?= $user['authority'] == "0" ? "一般" : "管理者" ?></p>
     </body>
-    <form action="delete_confirm.php" method="get">
+    <form action="delete_confirm.php" method="POST">
         <input type="hidden" name="id" value="<?= $user['id'] ?>">
-        <button type="submit">確認する</button>
+        <button type="submit" name="confirm">確認する</button>
     </form>
 </html>

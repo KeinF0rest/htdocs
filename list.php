@@ -12,6 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id'])) {
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $_SESSION['delete'] = true;
+    $id = intval($_POST['delete_id']);
+    header("Location: delete.php?id=" . $id);
+    exit();
+}
 try{
     $pdo=new PDO("mysql:dbname=account;host=localhost;","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 }catch(PDOException $e){
@@ -161,7 +167,10 @@ if ($_GET) {
                             <input type="hidden" name="update_id" value="<?= $user['id'] ?>">
                             <button type="submit">更新</button>
                         </form></td>
-                <td><button onclick="checkDeleteStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">削除</button></td>
+                    <td><form method="POST" style="display:inline;" onsubmit="return checkDeletePermission(<?= $user['delete_flag'] ?>);">
+                            <input type="hidden" name="delete_id" value="<?= $user['id'] ?>">
+                            <button type="submit">削除</button>
+                        </form></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -188,12 +197,19 @@ if ($_GET) {
             });
             
             function checkUpdatePermission(deleteFlag) {
-    if (deleteFlag == 1) {
-        alert("このアカウントは削除済みです。更新できません。");
-        return false;
-    }
-    return true;
-}
+                if (deleteFlag == 1) {
+                    alert("このアカウントは削除済みです。更新できません。");
+                    return false;
+                }
+                return true;
+            }
+            function checkDeletePermission(deleteFlag) {
+                if (deleteFlag == 1) {
+                    alert("このアカウントはすでに削除済みです。操作できません。");
+                    return false;
+                }
+                return true;
+            }
         </script>
     </body>
 </html>
