@@ -6,11 +6,12 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
-if (!isset($_POST['form_token']) || $_POST['form_token'] !== ($_SESSION['form_token'] ?? '')) {
-    die("不正な遷移です。");
+if (empty($_SESSION['regist_confirm'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
 }
-
-unset($_SESSION['form_token']);
+unset($_SESSION['regist_confirm']);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["regist_data"] = $_POST;

@@ -6,7 +6,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
-if (empty($_SESSION['update'])) {
+if (empty($_SESSION['update']) && empty($_SESSION['update_data'])) {
     $_SESSION['top_error'] = '不正なアクセスです。';
     header('Location: index.php');
     exit();

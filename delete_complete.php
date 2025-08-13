@@ -5,6 +5,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     header('Location: index.php');
     exit();
 }
+if (empty($_SESSION['delete_complete'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
+}
+unset($_SESSION['delete_complete']);
+
 $Reloaded = false;
 if (isset($_SESSION['delete_complete'])) {
     if ($_SESSION['delete_complete'] === true) {

@@ -4,7 +4,7 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
-
+unset($_SESSION['update_complete']);
 $authority = $_SESSION['user']['authority'] ?? null;
 
 ?>

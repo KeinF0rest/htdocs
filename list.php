@@ -5,6 +5,12 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     header('Location: index.php');
     exit();
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id'])) {
+    $_SESSION['update'] = true;
+    $id = intval($_POST['update_id']);
+    header("Location: update.php?id=" . $id);
+    exit();
+}
 
 try{
     $pdo=new PDO("mysql:dbname=account;host=localhost;","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
@@ -150,8 +156,11 @@ if ($_GET) {
                     <td><?= $user['authority'] == "0" ? "一般" : "管理者" ?></td>
                     <td><?= $user['delete_flag'] == "0" ? "有効" : "無効" ?></td>
                     <td><?= date("Y-m-d", strtotime($user['registered_time'])) ?></td>
-                <td><?= date("Y-m-d", strtotime($user['update_time'])) ?></td>
-                <td><button onclick="checkAccountStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">更新</button></td>
+                    <td><?= date("Y-m-d", strtotime($user['update_time'])) ?></td>
+                    <td><form method="POST" style="display:inline;" onsubmit="return checkUpdatePermission(<?= $user['delete_flag'] ?>);">
+                            <input type="hidden" name="update_id" value="<?= $user['id'] ?>">
+                            <button type="submit">更新</button>
+                        </form></td>
                 <td><button onclick="checkDeleteStatus(<?= $user['delete_flag'] ?>, <?= $user['id'] ?>)">削除</button></td>
                 </tr>
                 <?php endforeach; ?>
@@ -177,6 +186,14 @@ if ($_GET) {
                     });
                 });
             });
+            
+            function checkUpdatePermission(deleteFlag) {
+    if (deleteFlag == 1) {
+        alert("このアカウントは削除済みです。更新できません。");
+        return false;
+    }
+    return true;
+}
         </script>
     </body>
 </html>

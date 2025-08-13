@@ -5,6 +5,12 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     header('Location: index.php');
     exit();
 }
+if (empty($_SESSION['delete_confirm'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
+}
+unset($_SESSION['delete_confirm']);
 
 try {
     $pdo = new PDO("mysql:dbname=account;host=localhost;", "root", "", [

@@ -7,6 +7,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
+if (empty($_SESSION['regist_complete'])) {
+    $_SESSION['top_error'] = '不正なアクセスです。';
+    header('Location: index.php');
+    exit();
+}
+unset($_SESSION['regist_complete']);
+
 if (isset($_SESSION['registration_complete']) && $_SESSION['registration_complete'] === true) {
     echo '<div style="text-align: center; margin-top: 50px;">';
     echo '<h1>このアカウントはすでに登録されています</h1>';

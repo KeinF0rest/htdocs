@@ -6,20 +6,16 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['authority'] !== 1) {
     exit();
 }
 
-if (empty($_SESSION['update_complete'])) {
+if (!isset($_SESSION['update_complete'])|| !in_array($_SESSION['update_complete'], ['ready', 'viewed'])){
     $_SESSION['top_error'] = '不正なアクセスです。';
     header('Location: index.php');
     exit();
 }
-unset ($_SESSION['update_complete']);
-
 $Reloaded = false;
-if (isset($_SESSION['update_complete'])) {
-    if ($_SESSION['update_complete'] === true) {
-        $_SESSION['update_complete'] = 'viewed';
-    } elseif ($_SESSION['update_complete'] === 'viewed') {
-        $Reloaded = true;
-    }
+if ($_SESSION['update_complete'] === 'ready') {
+    $_SESSION['update_complete'] = 'viewed';
+} elseif ($_SESSION['update_complete'] === 'viewed') {
+    $Reloaded = true;
 }
 ?>
 <!DOCTYPE html>
